@@ -4,6 +4,7 @@
     <div class="alert mycolor1">구분</div>
 
     <form name="form1" action="" method="post">
+        @csrf
 
         <table class="table table-sm table-bordered mymargin5">
             <tr>

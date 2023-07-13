@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product; // Eloquent ORM 위한 선언
-use App\Models\Gubun;
+use App\Models\Product;
+use App\Models\Jangbu;
 
-class ProductController extends Controller
+class JangbuiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,30 +16,37 @@ class ProductController extends Controller
         $data['tmp'] = $this->qstring();
 
         $text1 = request('text1');
+        // text1이 Null이면 오늘날짜로 초기화
+        if (!$text1) {
+            $text1 = date("Y-m-d");
+        }
+
         $data['text1'] = $text1;
         $data['list'] = $this->getlist($text1); // 자료 읽기
-        return view('product.index', $data);
+        return view('jangbui.index', $data);
     }
 
     public function getlist($text1)
     {
-        $result = Product::leftjoin('gubuns', 'products.gubuns_id', '=', 'gubuns.id')
-            ->select('products.*', 'gubuns.name as gubun_name')
-            ->where('products.name', 'like', '%' . $text1 . '%')
-            ->orderby('products.name', 'asc')
+        $result = Jangbu::leftjoin('products', 'jangbus.products_id', '=', 'products.id')
+            ->select('jangbus.*', 'products.name as product_name')
+            ->where('jangbus.io', '=', 0)
+            ->where('jangbus.writeday', '=', $text1)
+            ->orderby('jangbus.id', 'desc')
             ->paginate(5)->appends(['text1' => $text1]);
         return $result;
     }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $data['list'] = $this->getlist_gubun();
+        $data['list'] = $this->getlist_product();
 
         $data['tmp'] = $this->qstring();
-        return view('product.create', $data);
+        return view('jangbui.create', $data);
     }
 
     /**
@@ -47,11 +54,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $row = new Product;
+        $row = new Jangbu;
         $this->save_row($request, $row);
 
         $tmp = $this->qstring();
-        return redirect('product' . $tmp);
+        return redirect('jangbui' . $tmp);
     }
 
     /**
@@ -61,9 +68,11 @@ class ProductController extends Controller
     {
         $data['tmp'] = $this->qstring();
 
-        $data['row'] = Product::leftjoin('gubuns', 'products.gubuns_id', '=', 'gubuns.id')->select('products.*', 'gubuns.name as gubun_name')->where('products.id', '=', $id)->first();
+        $data['row'] = Jangbu::leftjoin('products', 'jangbus.products_id', '=', 'products.id')
+            ->select('jangbus.*', 'products.name as product_name')
+            ->where('jangbus.id', '=', $id)->first();
 
-        return view('product.show', $data);
+        return view('jangbui.show', $data);
     }
 
     /**
@@ -71,16 +80,16 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data['list'] = $this->getlist_gubun();
+        $data['list'] = $this->getlist_product();
 
         $data['tmp'] = $this->qstring();
         $data['row'] = Product::find($id);
         return view('product.edit', $data);
     }
 
-    public function getlist_gubun()
+    public function getlist_product()
     {
-        $result = Gubun::orderby('name')->get();
+        $result = Product::orderby('name')->get();
         return $result;
     }
 
@@ -99,31 +108,24 @@ class ProductController extends Controller
     public function save_row(Request $request, $row)
     {
         $request->validate([
-            'gubuns_id' => 'required|numeric',
-            'name' => 'required|max:50',
-            'price' => 'required|numeric'
+            'writeday' => 'required|date',
+            'products_id' => 'required'
         ], [
-            'gubuns_id.required' => '구분명은 필수입력입니다.',
-            'name.required' => '이름은 필수입력입니다.',
-            'price.required' => '단가는 필수입력입니다.',
-            'name.max' => '50자 이내입니다.'
+            'writeday.required' => '날짜는 필수입력입니다.',
+            'products_id.required' => '제품명은 필수입력입니다.',
+            'writeday.date' => '날짜형식이 잘못되었습니다.',
         ]);
 
-        // 자료 수정
-        $row->gubuns_id = $request->input('gubuns_id');
-        $row->name = $request->input('name');
+        $row->io = 0;
+        $row->writeday = $request->input('writeday');
+        $row->products_id = $request->input('products_id');
         $row->price = $request->input('price');
-        $row->jaego = $request->input('jaego');
+        $row->numi = $request->input('numi');
+        $row->numo = 0;
+        $row->prices = $request->input('prices');
+        $row->bigo = $request->input('bigo');
 
-        if ($request->hasFile('pic')) {         //upload할 파일이 있는 경우
-            $pic = $request->file('pic');
-            $pic_name = $pic->getClientOriginalName();      // 파일이름
-            $pic->storeAs('public/product_img', $pic_name);  // 파일 저장
-
-            $row->pic = $pic_name;
-        }
-
-        $row->save(); // 수정 모드
+        $row->save();
     }
 
     /**

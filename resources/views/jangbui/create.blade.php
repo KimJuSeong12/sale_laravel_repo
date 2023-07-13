@@ -1,34 +1,22 @@
 @extends('main')
 @section('content')
     <br>
-    <div class="alert mycolor1" role="alert">제품</div>
+    <div class="alert mycolor1" role="alert">매입</div>
 
-    <form name="form1" action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+    <form name="form1" action="{{ route('jangbui.store') }}{{ $tmp }}" method="post">
         @csrf
 
         <table class="table table-bordered table-sm mymargin5">
             <tr>
-                <td width="20%" class="mycolor2">번호</td>
-                <td width="80%" align="left"></td>
-            </tr>
-            <tr>
                 <td width="20%" class="mycolor2">
-                    <font color="red">*</font> 구분명
+                    <font color="red">*</font> 날짜
                 </td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <select name="gubuns_id" class="form-select form-control-sm">
-                            <option value="" selected>선택하세요.</option>
-                            @foreach ($list as $row)
-                                @if ($row->id == old('gubuns_id'))
-                                    <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
-                                @else
-                                    <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <input type="text" name="writeday" size="20" value="{{ old('writeday') }}"
+                            class="form-select form-control-sm">
                     </div>
-                    @error('gubuns_id')
+                    @error('writeday')
                         {{ $message }}
                     @enderror
                 </td>
@@ -39,41 +27,54 @@
                 </td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="name" size="30" maxlength="50" value="{{ old('name') }}">
+                        <select name="products_id" class="form-select form-control-sm">
+                            <option value="" selected>선택하세요.</option>
+                            @foreach ($list as $row)
+                                @if ($row->id == old('products_id'))
+                                    <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
+                                @else
+                                    <option value="{{ $row->id }}" selected>{{ $row->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
-                    @error('name')
+                    @error('products_id')
                         {{ $message }}
                     @enderror
                 </td>
             </tr>
             <tr>
-                <td width="20%" class="mycolor2">
-                    <font color="red">*</font> 단가
-                </td>
+                <td width="20%" class="mycolor2">단가</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="price" size="20" maxlength="20" value="{{ old('price') }}"
-                            class="form-select form-control-sm">
-                    </div>
-                </td>
-                @error('price')
-                    {{ $message }}
-                @enderror
-            </tr>
-            <tr>
-                <td width="20%" class="mycolor2">재고</td>
-                <td width="80%" align="left">
-                    <div class="d-inline-flex">
-                        <input type="text" name="jaego" size="20" value=""
+                        <input type="text" name="price" size="20" value="{{ old('price') }}"
                             class="form-select form-control-sm">
                     </div>
                 </td>
             </tr>
             <tr>
-                <td width="20%" class="mycolor2">사진</td>
+                <td width="20%" class="mycolor2">수량</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="file" name="pic" size="20" value=""
+                        <input type="text" name="numi" size="20" value="{{ old('numi') }}"
+                            class="form-select form-control-sm">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" class="mycolor2">금액</td>
+                <td width="80%" align="left">
+                    <div class="d-inline-flex">
+                        <input type="text" name="prices" size="20" value="{{ old('prices') }}"
+                            class="form-select form-control-sm">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" class="mycolor2">비고</td>
+                <td width="80%" align="left">
+                    <div class="d-inline-flex">
+                        <input type="text" name="bigo" size="20" value="{{ old('bigo') }}"
                             class="form-select form-control-sm">
                     </div>
                 </td>
