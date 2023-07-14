@@ -1,11 +1,11 @@
 @extends('main')
 @section('content')
     <br>
-    <div class="alert mycolor1" role="alert">매입장</div>
+    <div class="alert mycolor1" role="alert">매출창</div>
 
     <script>
         function find_text() {
-            form1.action = "{{ route('jangbui.index') }}";
+            form1.action = "{{ route('jangbuo.index') }}";
             form1.submit();
         }
 
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="col-9" align="right">
-                <a href="{{ route('jangbui.create') }}" class="btn btn-sm mycolor1">추가</a>
+                <a href="{{ route('jangbuo.create') }}" class="btn btn-sm mycolor1">추가</a>
             </div>
         </div>
     </form>
@@ -56,9 +56,9 @@
             <tr>
                 <td>{{ $row->writeday }}</td>
                 <td align="left"><a
-                        href="{{ route('jangbui.show', $row->id) }}{{ $tmp }}">{{ $row->product_name }}</a></td>
+                        href="{{ route('jangbuo.show', $row->id) }}{{ $tmp }}">{{ $row->product_name }}</a></td>
                 <td align="right">{{ number_format($row->price) }}</td>
-                <td align="right">{{ number_format($row->numi) }}</td>
+                <td align="right">{{ number_format($row->numo) }}</td>
                 <td align="right">{{ number_format($row->prices) }}</td>
                 <td align="left">{{ $row->bigo }}</td>
             </tr>

@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
     <br>
-    <div class="alert mycolor1" role="alert">제품</div>
+    <div class="alert mycolor1" role="alert">매출</div>
 
     <script>
         $(function() {
@@ -12,21 +12,35 @@
             })
         })
 
+        function select_product() {
+            var str
+            str = form1.sel_products_id.value;
+            if (str == "") {
+                form1.products_id.value = ""
+                form1.price.value = ""
+                form1.prices.value = ""
+            } else {
+                str = str.split("^^")
+                form1.products_id.value = str[0]
+                form1.price.value = str[1]
+                form1.prices.value = Number(form1.price.value) * Number(form1.numo.value)
+            }
+        }
+
         function cal_prices() {
             form1.prices.value = Number(form1.price.value) * Number(form1.numo.value)
+            form1.bigo.focus()
+        }
+
+        function find_product() {
+            window.open("{{ route('findproduct.index') }}", "", "resizable=yes,scrollbars=yes,width=500,height600")
         }
     </script>
 
-    <form name="form1" action="{{ route('jangbui.update', $row->id) }}{{ $tmp }}" method="post"
-        enctype="multipart/form-data">
+    <form name="form1" action="{{ route('jangbuo.store') }}{{ $tmp }}" method="post">
         @csrf
-        @method('PATCH')
 
         <table class="table table-bordered table-sm mymargin5">
-            <tr>
-                <td width="20%" class="mycolor2">번호</td>
-                <td width="80%" align="left">{{ $row->id }}</td>
-            </tr>
             <tr>
                 <td width="20%" class="mycolor2">
                     <font color="red">*</font> 날짜
@@ -34,8 +48,8 @@
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
                         <div class="input-group input-group-sm date" id="writeday">
-                            <input type="text" name="writeday" size="10" value="{{ $row->writeday }}"
-                                class="form-control form-control-sm">
+                            <input type="text" name="writeday" size="20" value="{{ old('writeday') }}"
+                                class="form-select form-control-sm">
                             <div class="input-group-text">
                                 <div class="input-group-addon">
                                     <i class="far fa-calendar-alt fa-lg"></i>
@@ -54,16 +68,10 @@
                 </td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <select name="products_id" class="form-select form-control-sm">
-                            <option value="">선택하세요.</option>
-                            @foreach ($list as $row1)
-                                @if ($row1->id == $row->products_id)
-                                    <option value="{{ $row1->id }}" selected>{{ $row1->name }}</option>
-                                @else
-                                    <option value="{{ $row1->id }}">{{ $row1->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <input type="hidden" name="products_id" value="{{ old('products_id') }}">
+                        <input type="text" name="products_name" value="" class="form-control form-control-sm"
+                            readonly>&nbsp;
+                        <input type="button" value="제품찾기" onclick="find_product()" class="btn btn-sm mycolor1">
                     </div>
                     @error('products_id')
                         {{ $message }}
@@ -74,17 +82,18 @@
                 <td width="20%" class="mycolor2">단가</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="price" size="20" value="{{ $row->price }}"
-                            class="form-control form-control-sm" onchange="cal_prices()" />
+                        <input type="text" name="price" size="20" value="{{ old('price') }}"
+                            class="form-select form-control-sm" onchange="cal_prices()">
                     </div>
                 </td>
             </tr>
             <tr>
-                <td width="20%" class="mycolor2">수량</td>
+                <td width="20%" class="mycolor2">수량
+                </td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="numi" size="20" value="{{ $row->numi }}"
-                            class="form-control form-control-sm" onchange="cal_prices()" />
+                        <input type="text" name="numo" size="20" value="{{ old('numo') }}"
+                            class="form-select form-control-sm" onchange="cal_prices()">
                     </div>
                 </td>
             </tr>
@@ -92,8 +101,8 @@
                 <td width="20%" class="mycolor2">금액</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="prices" size="20" value="{{ $row->prices }}"
-                            class="form-control form-control-sm" readonly />
+                        <input type="text" name="prices" size="20" value="{{ old('prices') }}"
+                            class="form-select form-control-sm" readonly>
                     </div>
                 </td>
             </tr>
@@ -101,8 +110,8 @@
                 <td width="20%" class="mycolor2">비고</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="bigo" size="20" value="{{ $row->bigo }}"
-                            class="form-control form-control-sm" />
+                        <input type="text" name="bigo" size="20" value="{{ old('bigo') }}"
+                            class="form-select form-control-sm">
                     </div>
                 </td>
             </tr>

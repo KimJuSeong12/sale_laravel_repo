@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
     <br>
-    <div class="alert mycolor1">매입</div>
+    <div class="alert mycolor1">매출</div>
 
     <form name="form1" action="" method="post">
         @csrf
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <td width="20%" class="mycolor2">수량</td>
-                <td width="80%" align="left">{{ number_format($row->numi) }}</td>
+                <td width="80%" align="left">{{ number_format($row->numo) }}</td>
             </tr>
             <tr>
                 <td width="20%" class="mycolor2">금액</td>
@@ -36,7 +36,7 @@
 
         </table>
         <div align="center">
-            <a href="{{ route('jangbui.edit', $row->id) }}{{ $tmp }}" class="btn btn-sm mycolor1">수정</a>
+            <a href="{{ route('jangbuo.edit', $row->id) }}{{ $tmp }}" class="btn btn-sm mycolor1">수정</a>
             <form action="{{ route('jangbui.destroy', $row->id) }}">
                 @csrf
                 @method('DELETE')

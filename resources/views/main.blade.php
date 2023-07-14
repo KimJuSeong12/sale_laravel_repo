@@ -10,6 +10,11 @@
     <script src="{{ asset('my/js/jquery.js') }}"></script>
     <script src="{{ asset('my/js/popper.js') }}"></script>
     <script src="{{ asset('my/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ asset('my/js/moment-with-locales.min.js') }}"></script>
+    <script src="{{ asset('my/js/bootstrap5-datetimepicker.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('my/css/bootstrap5-datetimepicker.css') }}" />
+    <link rel="stylesheet" href="{{ asset('my/css/all.min.css') }}" />
 </head>
 
 <body>
@@ -28,7 +33,7 @@
                             <a class="nav-link" href="{{ route('jangbui.index') }}">매입</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">매출</a>
+                            <a class="nav-link" href="{{ route('jangbuo.index') }}">매출</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">기간조회</a>

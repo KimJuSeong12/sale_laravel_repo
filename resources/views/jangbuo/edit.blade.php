@@ -12,12 +12,16 @@
             })
         })
 
+        function find_product() {
+            window.open("{{ route('findproduct.index') }}", "", "resizable=yes,scrollbars=yes,width=500,height600")
+        }
+
         function cal_prices() {
             form1.prices.value = Number(form1.price.value) * Number(form1.numo.value)
         }
     </script>
 
-    <form name="form1" action="{{ route('jangbui.update', $row->id) }}{{ $tmp }}" method="post"
+    <form name="form1" action="{{ route('jangbuo.update', $row->id) }}{{ $tmp }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PATCH')
@@ -54,16 +58,10 @@
                 </td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <select name="products_id" class="form-select form-control-sm">
-                            <option value="">선택하세요.</option>
-                            @foreach ($list as $row1)
-                                @if ($row1->id == $row->products_id)
-                                    <option value="{{ $row1->id }}" selected>{{ $row1->name }}</option>
-                                @else
-                                    <option value="{{ $row1->id }}">{{ $row1->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <input type="hidden" name="products_id" value="{{ $row->products_id }}">
+                        <input type="text" name="products_name" value="{{ $row->product_name }}"
+                            class="form-control form-control-sm" readonly>&nbsp;
+                        <input type="button" value="제품찾기" onclick="find_product()" class="btn btn-sm mycolor1">
                     </div>
                     @error('products_id')
                         {{ $message }}
@@ -83,7 +81,7 @@
                 <td width="20%" class="mycolor2">수량</td>
                 <td width="80%" align="left">
                     <div class="d-inline-flex">
-                        <input type="text" name="numi" size="20" value="{{ $row->numi }}"
+                        <input type="text" name="numo" size="20" value="{{ $row->numo }}"
                             class="form-control form-control-sm" onchange="cal_prices()" />
                     </div>
                 </td>

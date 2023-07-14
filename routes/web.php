@@ -5,6 +5,8 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\GubunController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\JangbuiController;
+use App\Http\Controllers\JangbuoController;
+use App\Http\Controllers\FindproductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,5 @@ Route::resource('member', MemberController::class);
 Route::resource('gubun', GubunController::class);
 Route::resource('product', ProductController::class);
 Route::resource('jangbui', JangbuiController::class);
+Route::resource('jangbuo', JangbuoController::class);
+Route::resource('findproduct', FindproductController::class);
