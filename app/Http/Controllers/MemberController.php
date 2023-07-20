@@ -12,6 +12,10 @@ class MemberController extends Controller
      */
     public function index()
     {
+        if (session()->get("rank") != 1) {
+            return redirect("/");
+        }
+
         $data['tmp'] = $this->qstring();
 
         $text1 = request('text1');

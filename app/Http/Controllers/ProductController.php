@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product; // Eloquent ORM 위한 선언
 use App\Models\Gubun;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -135,6 +136,21 @@ class ProductController extends Controller
 
         $tmp = $this->qstring();
         return redirect('product' . $tmp);
+    }
+
+    public function jaego()
+    {
+        DB::statement('drop table if exists temps;');
+        DB::statement('create table temps (
+            id int not null auto_increment,
+            products_id int,
+            jaego int default 0,
+            primary key(id) );');
+        DB::statement('update products set jaego=0;');
+        DB::statement('insert into temps (products_id, jaego) select products_id, sum(numi)-sum(numo) from jangbus group by products_id;');
+        DB::statement('update products join temps on products.id=temps.products_id set products.jaego=temps.jaego;');
+
+        return redirect('product');
     }
 
     public function qstring()
