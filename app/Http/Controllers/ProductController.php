@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product; // Eloquent ORM 위한 선언
 use App\Models\Gubun;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -120,6 +121,12 @@ class ProductController extends Controller
             $pic = $request->file('pic');
             $pic_name = $pic->getClientOriginalName();      // 파일이름
             $pic->storeAs('public/product_img', $pic_name);  // 파일 저장
+
+            $img = Image::make($pic)
+                ->resize(null, 200, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save('storage/product_img/thumb/' . $pic_name);
 
             $row->pic = $pic_name;
         }

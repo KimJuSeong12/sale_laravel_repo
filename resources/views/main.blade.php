@@ -62,6 +62,7 @@
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('picture.index') }}">사진</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('ajax.index') }}">Ajax</a></li>
                     </ul>
                     @if (!session()->exists('uid'))
                         <a class="btn btn-sm btn-outline-secondary btn-dark" href="#" data-bs-toggle="modal"

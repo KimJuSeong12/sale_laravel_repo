@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\BestController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CrosstabController;
@@ -44,3 +45,4 @@ Route::resource('chart', ChartController::class);
 Route::post('login/check', [LoginController::class, 'check']);
 Route::get('login/logout', [LoginController::class, 'logout']);
 Route::resource('picture', PictureController::class);
+Route::resource('ajax', AjaxController::class);

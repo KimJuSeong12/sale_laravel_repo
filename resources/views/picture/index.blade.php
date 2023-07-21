@@ -22,28 +22,6 @@
         </div>
     </form>
 
-    {{-- <table class="table table-sm table-bordered table-hover mymargin5">
-        <tr class="mycolor2">
-            <td width="10%">번호</td>
-            <td width="20%">구분명</td>
-            <td width="30%">제품명</td>
-            <td width="20%">단가</td>
-            <td width="20%">재고</td>
-        </tr>
-        @foreach ($list as $row)
-            <tr>
-                <td>{{ $row->id }}</td>
-                <td>{{ $row->gubun_name }}</td>
-                <td onclick="window.close()"><a
-                        href="javascript:SendProduct( {{ $row->id }},'{{ $row->name }}',{{ $row->price }})">{{ $row->name }}</a>
-                </td>
-                <td>{{ $row->price }}</td>
-                <td>{{ $row->jaego }}</td>
-            </tr>
-        @endforeach
-
-    </table> --}}
-
     <div class="row">
         @foreach ($list as $row)
             @php
@@ -52,7 +30,9 @@
             @endphp
             <div class="col-3">
                 <div class="mythumb_box">
-                    <img src="{{ asset('/storage/product_img/' . $iname) }}" class="mythumb_image">
+                    <img src="{{ asset('/storage/product_img/thumb/' . $iname) }}" class="mythumb_image"
+                        style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#zoomModal"
+                        onclick="document.getElementById('zoomModalLabel').innerText='{{ $pname }}'; picname.src='{{ asset('/storage/product_img/' . $iname) }}'">
                     <div class="mythumb_text">{{ $pname }}</div>
                 </div>
             </div>
@@ -60,3 +40,19 @@
     </div>
     </div>
 @endsection
+
+{{-- Zoom Modal 이미지 --}}
+<div class="modal fade" id="zoomModal" tabindex="-1" aria-labelledby="zoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="zoomModalLabel">상품명1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" align="center">
+                <img src="#" name="picname" class="img-fluid img-thumbnail" style="cursor: pointer"
+                    data-bs-dismiss="modal">
+            </div>
+        </div>
+    </div>
+</div>
